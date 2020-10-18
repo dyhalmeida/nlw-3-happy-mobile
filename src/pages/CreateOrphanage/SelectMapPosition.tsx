@@ -1,17 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Dimensions, Text } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, MapEvent } from 'react-native-maps';
 
 import marker from '../../images/marker.png';
 
 export default function SelectMapPosition() {
   const navigation = useNavigation();
+  const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
+
+  const handleSelectMapPosition = (event: MapEvent) => {
+    const LatLng = event.nativeEvent.coordinate;
+    setPosition(LatLng);
+  };
 
   function handleNextStep() {
-    navigation.navigate('OrphanageData');
+    navigation.navigate('OrphanageData', { position });
   }
 
   return (
@@ -23,17 +29,25 @@ export default function SelectMapPosition() {
           latitudeDelta: 0.008,
           longitudeDelta: 0.008,
         }}
+        onPress={handleSelectMapPosition}
         style={styles.mapStyle}
       >
-        <Marker
-          icon={marker}
-          coordinate={{ latitude: -12.7014133, longitude: -38.3320063 }}
-        />
+        {position.latitude !== 0 && (
+          <Marker
+            icon={marker}
+            coordinate={{
+              latitude: position.latitude,
+              longitude: position.longitude,
+            }}
+          />
+        )}
       </MapView>
 
-      <RectButton style={styles.nextButton} onPress={handleNextStep}>
-        <Text style={styles.nextButtonText}>Próximo</Text>
-      </RectButton>
+      {position.latitude !== 0 && (
+        <RectButton style={styles.nextButton} onPress={handleNextStep}>
+          <Text style={styles.nextButtonText}>Próximo</Text>
+        </RectButton>
+      )}
     </View>
   );
 }
