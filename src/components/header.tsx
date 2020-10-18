@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 interface IHeader {
   title: string;
@@ -9,16 +10,20 @@ interface IHeader {
 }
 
 const Header = ({ title, showCancel = true }: IHeader) => {
+  const navigation = useNavigation();
+
+  const handleToBackHome = () => navigation.navigate('OrphanagesMap');
+
   return (
     <View style={styles.container}>
-      <BorderlessButton>
+      <BorderlessButton onPress={navigation.goBack}>
         <Feather name="arrow-left" size={24} color="#15b6d6" />
       </BorderlessButton>
 
       <Text style={styles.title}>{title}</Text>
 
       {showCancel ? (
-        <BorderlessButton>
+        <BorderlessButton onPress={handleToBackHome}>
           <Feather name="x" size={24} color="#ff669d" />
         </BorderlessButton>
       ) : (
