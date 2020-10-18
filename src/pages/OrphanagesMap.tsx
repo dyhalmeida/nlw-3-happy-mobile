@@ -1,22 +1,21 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 import { Feather } from '@expo/vector-icons';
 
 import marker from '../images/marker.png';
 import { useNavigation } from '@react-navigation/native';
+import { RectButton } from 'react-native-gesture-handler';
 
 const OrphanagesMap = () => {
   const navigation = useNavigation();
 
   const handleNavigateToOrphanageDetails = () => {
     navigation.navigate('OrphanageDetails');
+  };
+
+  const handleNavigateToSelectMapPosition = () => {
+    navigation.navigate('SelectMapPosition');
   };
 
   return (
@@ -51,12 +50,12 @@ const OrphanagesMap = () => {
       </MapView>
       <View style={styles.footer}>
         <Text style={styles.footerText}>2 orfanatos encontrados</Text>
-        <TouchableOpacity
+        <RectButton
           style={styles.createOrphanageButton}
-          onPress={() => {}}
+          onPress={handleNavigateToSelectMapPosition}
         >
           <Feather name="plus" size={20} color="#fff" />
-        </TouchableOpacity>
+        </RectButton>
       </View>
     </View>
   );
